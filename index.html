@@ -5,31 +5,26 @@
 <title>タブパネル</title>
 <link rel="stylesheet" href="css/reset.css">
 <link rel="stylesheet" href="css/common.css">
+<script src="js/vue2.5.17.js"></script>
 </head>
 <style>
 
-.tabpanel ul {
-	list-style: none;
-	margin: 0 auto;
+.tabpanel > ul {
 	width: 100%;
+	list-style: none;
+	display: flex;
+	justify-content: space-between;
 }
-.tabpanel li {
+.tabpanel > ul li {
 	width: 20%;
-	display: block;
-	float:left;
-}
-.tabpanel li.active {
-	background: #FF9641;
-}
-.tabpanel li.active a{
-	color:#FFF;
-}
-.tabpanel [id^=detail]{
-	display: none;
+	transition:0.6s;
 }
 
-.tabpanel #detail01{
-	display: block;
+.tabpanel > ul li.active {
+	background: #FF9641;
+}
+.tabpanel > ul li.active a{
+	color:#FFF;
 }
 
 /* theme-tabpanel */
@@ -55,30 +50,22 @@
 	color:#fff;
 }
 
-.theme-tabpanel > div {
-	font-size: 14px;
-	line-height: 1.5;
-	overflow: hidden;
-	margin:0;
-}
-.theme-tabpanel h2{
-	text-align:center;
-	margin-bottom:30px;
-}
+
 @media screen and (max-width: 640px) {
-	.tabpanel ul {
+	.tabpanel > ul {
 		margin: 0 auto;
+		flex-wrap: wrap;
 	}
-	.tabpanel li {
+	.tabpanel > ul li {
 		width: 50%;
 		display: block;
 		float:left;
 		color: #999;
 	}
-	.tabpanel li:nth-child(1),.tabpanel li:nth-child(2),.tabpanel li:nth-child(3) {
+	.tabpanel > ul li:nth-child(1),.tabpanel > ul li:nth-child(2),.tabpanel > ul li:nth-child(3) {
 		width: 33.3333333%;
 	}
-	.tabpanel li:nth-child(4) {
+	.tabpanel > ul li:nth-child(4) {
 		border-left:2px solid #888888;
 	}
 	.theme-tabpanel li a {
@@ -86,74 +73,96 @@
 		padding: 15px 10px;
 		text-decoration: none;
 	}
-	.theme-tabpanel > [id^=detail] {
-		margin:0;
-	}
-	.theme-tabpanel h2{
-		width:30%;
-		margin:0 auto 20px;
-	}
 }
 
+/*詳細のdiv*/
 .property_detail{
 	border:2px solid #888;
+	padding:20px 30px;
+}
+
+
+/*transition設定*/
+.fade-enter-active, .fade-leave-active {
+  transition: all 0.5s ease;
+}
+/* 表示される時は0から1へ*/
+.fade-enter {
+  opacity: 0;
+}
+.fade-enter-to {
+  opacity: 1;
+}
+/* 消える時は1から0へ*/
+.fade-leave {
+  opacity: 1;
+}
+.fade-leave-to {
+  opacity: 0;
 }
 
 </style>
 <body>
-<h2><img src="img/detail.png" alt="物件概要"></h2>
+<h2>物件概要</h2>
 <div class="wide">
 	<section class="inner">
-		<div class="tabpanel theme-tabpanel">
+		<div class="tabpanel theme-tabpanel" id="tab">
 			<ul class="clearfix">
-				<li class="active"><a href="#detail01">物件概要</a></li>
-				<li><a href="#detail02">周辺地図</a></li>
-				<li><a href="#detail03">周辺地</a></li>
-				<li><a href="#detail04">周辺のないな</a></li>
-				<li><a href="#detail05">周だと</a></li>
+				<li :class="{active:activeCheck('tab01')}"><a @click="switchActive('tab01')" href="javascript:void(0)">物件概要</a></li>
+				<li :class="{active:activeCheck('tab02')}"><a @click="switchActive('tab02')" href="javascript:void(0)">周辺地図</a></li>
+				<li :class="{active:activeCheck('tab03')}"><a @click="switchActive('tab03')" href="javascript:void(0)">周辺地</a></li>
+				<li :class="{active:activeCheck('tab04')}"><a @click="switchActive('tab04')" href="javascript:void(0)">最寄り</a></li>
+				<li :class="{active:activeCheck('tab05')}"><a @click="switchActive('tab05')" href="javascript:void(0)">その他</a></li>
 			</ul>
-			<div id="detail01">
-				<div class="property_detail">
-					ディテイルその1
-				</div><!-- / .property_detail -->
-			</div>
-			<div id="detail02">
-				<div class="property_detail">
-					ディテイルその2
-				</div><!-- / .property_detail -->
-			</div>
-			<div id="detail03">
-				<div class="property_detail">
-					ディテイルその3
-				</div><!-- / .property_detail -->
-			</div>
-			<div id="detail04">
-				<div class="property_detail">
-					ディテイルその4
-				</div><!-- / .property_detail -->
-			</div>
-			<div id="detail05">
-				<div class="property_detail">
-					ディテイルその5
-				</div><!-- / .property_detail -->
-			</div>
+
+			<div class="property_detail">
+				<transition name="fade" mode="out-in">
+					<div v-if="activeCheck('tab01')" key="tab01">
+						ディテイルその1ディテイルその1ディテイルその1<br>ディテイルその1ディテイルその1ディテイルその1
+					</div>
+
+					<div v-if="activeCheck('tab02')" key="tab02">
+						ディテイルその2ディテイルその2ディテイルその2ディテイルその2ディテイルその2
+					</div>
+
+					<div v-if="activeCheck('tab03')" key="tab03">
+						ディテイルその3ディテイルその3ディテイルその3ディテイルその3<br>ディテイルその3ディテイルその3ディテイルその3<br>ディテイルその3ディテイルその3
+					</div>
+
+					<div v-if="activeCheck('tab04')" key="tab04">
+						ディテイルその4ディテイルその4ディテイルその4ディテイルその4<br>ディテイルその4
+					</div>
+
+					<div v-if="activeCheck('tab05')" key="tab05">
+						ディテイルその5ディテイルその5ディテイルその5ディテイルその5ディテイルその5<br>ディテイルその5ディテイルその5<br>
+						ディテイルその5ディテイルその5<br>ディテイルその5<br>ディテイルその5
+					</div>
+			</transition>
+			</div><!-- / .property_detail -->
 		</div>
 	</section>
 </div>
- 
-<script src="js/jquery-2.2.4.min.js"></script>
+
+<!-- <script src="js/jquery-2.2.4.min.js"></script> -->
 <script>
 //tab
-$(function(){
-	$(".tabpanel a").on("click", function(){
-		var id = $(this).attr("href");
-		$("[id^=detail]").hide();
-		$(".tabpanel").find(id).show();
-		$(".tabpanel li").removeClass("active");
-		$(this).parent().addClass("active");
-		return false;
-	});
-});
+let tab = new Vue({
+	el:'#tab',
+	data:{
+		active:'tab01',
+	},
+	methods:{
+		//dataの値を変えるので、ここではreturnを使わない
+		switchActive:function(name){
+			this.active = name;
+		},
+		activeCheck: function (name) {
+		//ture/false のチェックをしたいのでここではreturnを使う
+			return this.active === name;
+		}
+	},
+})
+
 </script>
 </body>
 </html>
