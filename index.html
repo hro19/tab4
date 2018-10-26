@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>タブパネル</title>
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/common.css">
+</head>
+<style>
+
+.tabpanel ul {
+	list-style: none;
+	margin: 0 auto;
+	width: 100%;
+}
+.tabpanel li {
+	width: 20%;
+	display: block;
+	float:left;
+}
+.tabpanel li.active {
+	background: #FF9641;
+}
+.tabpanel li.active a{
+	color:#FFF;
+}
+.tabpanel [id^=detail]{
+	display: none;
+}
+
+.tabpanel #detail01{
+	display: block;
+}
+
+/* theme-tabpanel */
+.theme-tabpanel li {
+	text-align: center;
+	border-top:2px solid #888888;
+	border-right:2px solid #888888;
+}
+.theme-tabpanel li:first-child {
+	border-left:2px solid #888888;
+}
+
+.theme-tabpanel li a {
+	display: block;
+	color: #B4B4B5;
+	padding: 15px 10px;
+}
+.theme-tabpanel li a:hover {
+	color:#231C1C;
+}
+.theme-tabpanel li.active a:hover {
+	background:inherit;
+	color:#fff;
+}
+
+.theme-tabpanel > div {
+	font-size: 14px;
+	line-height: 1.5;
+	overflow: hidden;
+	margin:0;
+}
+.theme-tabpanel h2{
+	text-align:center;
+	margin-bottom:30px;
+}
+@media screen and (max-width: 640px) {
+	.tabpanel ul {
+		margin: 0 auto;
+	}
+	.tabpanel li {
+		width: 50%;
+		display: block;
+		float:left;
+		color: #999;
+	}
+	.tabpanel li:nth-child(1),.tabpanel li:nth-child(2),.tabpanel li:nth-child(3) {
+		width: 33.3333333%;
+	}
+	.tabpanel li:nth-child(4) {
+		border-left:2px solid #888888;
+	}
+	.theme-tabpanel li a {
+		display: block;
+		padding: 15px 10px;
+		text-decoration: none;
+	}
+	.theme-tabpanel > [id^=detail] {
+		margin:0;
+	}
+	.theme-tabpanel h2{
+		width:30%;
+		margin:0 auto 20px;
+	}
+}
+
+.property_detail{
+	border:2px solid #888;
+}
+
+</style>
+<body>
+<h2><img src="img/detail.png" alt="物件概要"></h2>
+<div class="wide">
+	<section class="inner">
+		<div class="tabpanel theme-tabpanel">
+			<ul class="clearfix">
+				<li class="active"><a href="#detail01">物件概要</a></li>
+				<li><a href="#detail02">周辺地図</a></li>
+				<li><a href="#detail03">周辺地</a></li>
+				<li><a href="#detail04">周辺のないな</a></li>
+				<li><a href="#detail05">周だと</a></li>
+			</ul>
+			<div id="detail01">
+				<div class="property_detail">
+					ディテイルその1
+				</div><!-- / .property_detail -->
+			</div>
+			<div id="detail02">
+				<div class="property_detail">
+					ディテイルその2
+				</div><!-- / .property_detail -->
+			</div>
+			<div id="detail03">
+				<div class="property_detail">
+					ディテイルその3
+				</div><!-- / .property_detail -->
+			</div>
+			<div id="detail04">
+				<div class="property_detail">
+					ディテイルその4
+				</div><!-- / .property_detail -->
+			</div>
+			<div id="detail05">
+				<div class="property_detail">
+					ディテイルその5
+				</div><!-- / .property_detail -->
+			</div>
+		</div>
+	</section>
+</div>
+ 
+<script src="js/jquery-2.2.4.min.js"></script>
+<script>
+//tab
+$(function(){
+	$(".tabpanel a").on("click", function(){
+		var id = $(this).attr("href");
+		$("[id^=detail]").hide();
+		$(".tabpanel").find(id).show();
+		$(".tabpanel li").removeClass("active");
+		$(this).parent().addClass("active");
+		return false;
+	});
+});
+</script>
+</body>
+</html>
